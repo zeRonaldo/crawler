@@ -8,7 +8,7 @@ import crawler.*;
 public class Crawler {
 
 	public static void main(String[] args) {
-		ResearchGate.getRGData("Chrisane+Freire");
+		ResearchGate.getRGData("Damires+yluska+souza");
 
 }
 }

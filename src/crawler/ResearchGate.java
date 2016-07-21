@@ -1,6 +1,14 @@
 package crawler;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Set;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import crawler.SearchEngine;
 
 public class ResearchGate {
@@ -8,17 +16,57 @@ public class ResearchGate {
 	public static void getRGData(String name){
 		String search = name +"+Research+gate";
 		System.out.println("I'll Search Bing for :"+search);
-		String linkRGPRofile = RGProfile(search);
-		if(linkRGPRofile == null){
+		String linkRGProfile = RGProfile(search);
+		if(linkRGProfile == null){
 			System.out.println("Não foi encontrado um perfil no Research Gate para "+ name);
 		}else{
-			extractRGData(name);
+			extractRGData(linkRGProfile);
 		}
 		
 	}
 	
-	private static void extractRGData(String name) {
+	private static void extractRGData(String profile) {
 		// TODO Auto-generated method stub
+		ArrayList<String> skills = new ArrayList<String>();
+		ArrayList<String> keywords = new ArrayList<String>();
+		
+		
+		
+		try {
+			Document doc = Jsoup
+					.connect(profile).get();
+			String institution = doc.select(".institution-name").text(); 
+			System.out.println("Instituição: ");
+			System.out.println("-"+institution);
+
+			// Get Skills and topics
+			doc = Jsoup
+				.connect(profile+"/info").get();
+			
+			
+			Elements skillsraw = doc.select("div.profile-skills li .ga-keyword-pill"); // a with href
+			Elements topicsraw = doc.select("div.keyword-editor-teaser li .ga-keyword-pill"); // a with href
+			
+			System.out.println("Skills:");
+			for (Element element : skillsraw) {
+				skills.add(element.text());
+			    System.out.println("-"+element.text());
+			}
+			
+			System.out.println("Topics:");
+			for (Element element : topicsraw) {
+				keywords.add(element.text());
+			    System.out.println("-"+element.text());
+			}
+			
+			
+			
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+			
 		
 	}
 
@@ -53,15 +101,17 @@ public class ResearchGate {
 						}
 					}
 					rgProfile = link;
+					System.out.println(rgProfile);
 					return (rgProfile);
 				}else{
 					rgProfile = link;
+					System.out.println(rgProfile);
 					return (rgProfile);
 				}
 			}else{
 				
 			}
-			
+			System.out.println(rgProfile);
 			return (rgProfile);
 		
 			

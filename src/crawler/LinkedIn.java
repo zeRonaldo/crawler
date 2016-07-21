@@ -6,7 +6,7 @@ import crawler.SearchEngine;
 public class LinkedIn {
 	
 	public static void getLIData(String name){
-		String search = name +"+Linked+In";
+		String search = name +"+LinkedIn";
 		System.out.println("I'll Search Bing for :"+search);
 		LIProfile(search);
 		
